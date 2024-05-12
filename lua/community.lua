@@ -6,6 +6,7 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
+  { import = "astrocommunity.pack.ruby" },
   -- import/override with your plugins folder
 
   -- Copilot
@@ -71,4 +72,8 @@ return {
   { import = "astrocommunity.syntax.hlargs-nvim" },
   -- Easy alignment
   { import = "astrocommunity.syntax.vim-easy-align" },
+  -- Statusline with mode
+  { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
+  -- ChatGPT
+  { import = "astrocommunity.editing-support.chatgpt-nvim" },
 }
