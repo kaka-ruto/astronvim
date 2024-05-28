@@ -76,4 +76,8 @@ return {
   { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
   -- ChatGPT
   { import = "astrocommunity.editing-support.chatgpt-nvim" },
+  -- Multiple cursors
+  { import = "astrocommunity.editing-support.multiple-cursors-nvim" },
+  -- Search and replace
+  { import = "astrocommunity.project.nvim-spectre" },
 }
