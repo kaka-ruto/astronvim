@@ -103,7 +103,7 @@ return {
         },
         -- Create a new file in the current directory, with current buffer contents
         -- If the immediate directory does not exist, create it
-        -- Switch to the new file
+        -- Switch to the new file and paste the copied contents
         ["<Leader><Leader>cf"] = {
           function()
             local full_path = vim.fn.expand "%:p"

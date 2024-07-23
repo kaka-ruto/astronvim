@@ -79,5 +79,5 @@ return {
   -- Multiple cursors
   { import = "astrocommunity.editing-support.multiple-cursors-nvim" },
   -- Search and replace
-  { import = "astrocommunity.project.nvim-spectre" },
+  { import = "astrocommunity.search.nvim-spectre" },
 }
