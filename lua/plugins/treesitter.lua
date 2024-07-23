@@ -11,7 +11,7 @@ return {
       -- add more arguments for adding more treesitter parsers
     })
   end,
-    -- Location and syntax-aware text objects
+  -- Location and syntax-aware text objects
   {
     "RRethy/nvim-treesitter-textsubjects",
     after = "nvim-treesitter",
@@ -38,12 +38,6 @@ return {
     -- Better commenting
     "JoosepAlviste/nvim-ts-context-commentstring",
     after = "nvim-treesitter",
-    config = function()
-      require("nvim-treesitter.configs").setup {
-        context_commentstring = {
-          enable = true,
-        },
-      }
-    end,
+    config = function() require("nvim-treesitter.configs").setup {} end,
   },
 }
