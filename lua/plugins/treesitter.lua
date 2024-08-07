@@ -40,4 +40,20 @@ return {
     after = "nvim-treesitter",
     config = function() require("nvim-treesitter.configs").setup {} end,
   },
+  {
+    -- Split and join blocks of code with space j
+    "Wansmer/treesj",
+    dependencies = {
+      {
+        "AstroNvim/astrocore",
+        opts = {
+          mappings = {
+            n = {
+              ["<Leader>j"] = { "<Cmd>TSJToggle<CR>", desc = "Toggle Treesitter Join" },
+            },
+          },
+        },
+      },
+    },
+  },
 }
