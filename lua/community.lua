@@ -5,10 +5,9 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-  { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.pack.ruby" },
   -- import/override with your plugins folder
 
+  { import = "astrocommunity.pack.lua" },
   -- Copilot
   { import = "astrocommunity.completion.copilot-lua-cmp" },
   -- Increment & decrement numbers with <C-a> & <C-x>
@@ -78,4 +77,8 @@ return {
   { import = "astrocommunity.editing-support.multiple-cursors-nvim" },
   -- Search and replace
   { import = "astrocommunity.search.nvim-spectre" },
+  -- Code with AI
+  { import = "astrocommunity.completion.avante-nvim" },
+  -- Debugging
+  { import = "astrocommunity.debugging.nvim-dap-repl-highlights" },
 }
