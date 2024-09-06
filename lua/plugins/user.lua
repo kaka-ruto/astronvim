@@ -146,6 +146,6 @@ return {
     end,
     -- Lazy load
     cmd = { "Other", "OtherSplit", "OtherVSplit" },
-    keys = { { "<leader>a", "<CMD>OtherVSplit<CR>", desc = "Open alternate file in vertical split" } },
+    keys = { { "<leader>v", "<CMD>OtherVSplit<CR>", desc = "Open alternate file in vertical split" } },
   },
 }

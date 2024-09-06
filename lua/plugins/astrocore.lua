@@ -85,7 +85,6 @@ return {
         [",e"] = { [[:e <C-R>=expand("%:h") . "/" <CR>]] },
         -- Split open a file in the same dir as the open buffer
         [",v"] = { [[:vs <C-R>=expand("%:h") . "/" <CR>]] },
-        ["<Leader>a"] = { [[:OtherVSplit<CR>]] },
         -- Telescope find in dir
         ["<Leader>fd"] = { [[:Telescope dir find_files<CR>]], noremap = true, silent = true },
         -- Telescope grep dir
