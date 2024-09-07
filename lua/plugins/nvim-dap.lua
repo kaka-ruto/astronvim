@@ -46,6 +46,52 @@ return {
     --     localfs = true,
     --   },
     -- }
+    local function get_test_command(file, line)
+      local cmd = { "ruby", "-Itest" }
+      table.insert(cmd, file)
+
+      if line then
+        local test_name =
+          vim.fn.substitute(vim.fn.getline(line), [[^\s*\(def\s\+test_\|test\s\+['"`]\)\(.*\)['"`]\s*$]], "\\2", "")
+        if test_name and test_name ~= "" then
+          table.insert(cmd, "--name")
+          table.insert(cmd, "/" .. test_name .. "/")
+        end
+      end
+
+      return cmd
+    end
+
+    local project_root = vim.fn.getcwd()
+
+    local function create_minitest_config(name, get_args)
+      return {
+        type = "ruby",
+        name = name,
+        request = "attach",
+        command = "bundle",
+        commandArgs = function()
+          local args = { "exec", "rdbg", "-n", "--open", "--port", "3003", "-c", "--" }
+          local test_cmd = get_args()
+          for _, arg in ipairs(test_cmd) do
+            table.insert(args, arg)
+          end
+          return args
+        end,
+        port = 3003,
+        server = "127.0.0.1",
+        cwd = "${workspaceFolder}",
+        env = {
+          ["RAILS_ENV"] = "test",
+          ["RUBY_DEBUG_FORK_MODE"] = "parent",
+        },
+        useBundler = true,
+        pathMappings = {
+          [project_root] = "${workspaceFolder}",
+        },
+        localfs = true,
+      }
+    end
     dap.configurations.ruby = {
       {
         type = "ruby",
@@ -57,7 +103,6 @@ return {
           source_filetype = "ruby",
         },
         localfs = true,
-        waiting = 1000,
       },
       {
         type = "ruby",
@@ -71,8 +116,16 @@ return {
           source_filetype = "ruby",
         },
         localfs = true,
-        waiting = 1000,
       },
+      create_minitest_config("Minitest - Current File", function()
+        local file = vim.fn.expand "%:p"
+        return get_test_command(file)
+      end),
+      create_minitest_config("Minitest - Current Line", function()
+        local file = vim.fn.expand "%:p"
+        local line = vim.fn.line "."
+        return get_test_command(file, line)
+      end),
     }
 
     dap.adapters.ruby = function(callback, config)
@@ -82,6 +135,7 @@ return {
         handle, pid_or_err = vim.loop.spawn(config.command, {
           args = config.commandArgs,
           detached = true,
+          cwd = config.cwd,
         }, function(code)
           handle:close()
           if code ~= 0 then print("rdbg exited with code", code) end
@@ -95,7 +149,7 @@ return {
               port = config.port,
             }
           end,
-          100
+          1000
         )
       else
         callback {
@@ -105,6 +159,18 @@ return {
         }
       end
     end
+    -- Create commands to run the debugger configurations
+    vim.api.nvim_create_user_command(
+      "DebugMinitestFile",
+      function() dap.run(dap.configurations.ruby[#dap.configurations.ruby - 1]) end,
+      {}
+    )
+
+    vim.api.nvim_create_user_command(
+      "DebugMinitestLine",
+      function() dap.run(dap.configurations.ruby[#dap.configurations.ruby]) end,
+      {}
+    )
 
     -- Existing configurations
     dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
@@ -131,70 +197,3 @@ return {
     }
   end,
 }
-
--- return {
---   "mfussenegger/nvim-dap",
---   dependencies = { "kaka-ruto/nvim-ruby-debugger", "rcarriga/nvim-dap-ui", "theHamsta/nvim-dap-virtual-text" },
---   config = function()
---     local dap = require "dap"
---     local ruby_debugger = require "ruby_debugger"
---     local dapui = require "dapui"
---     local dap_virtual_text = require "nvim-dap-virtual-text"
---
---     ruby_debugger.setup {
---       port = 38698,
---       host = "127.0.0.1",
---       log_level = "debug",
---     }
---     dap_virtual_text.setup { commented = true }
---     dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
---     dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
---     dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
---
---     dap.set_log_level "TRACE"
---   end,
--- }
--- table.insert(dap.configurations.ruby, {
---   type = "ruby",
---   name = "Rails",
---   request = "attach",
---   port = 3001,
---   server = "127.0.0.1",
---   options = {
---     source_filetype = "ruby",
---   },
---   cwd = vim.fn.getcwd(),
---   remoteWorkspaceRoot = "/Users/kaka/Code/ruby/autohaven",
--- remoteRoot = "/Users/kaka/Code/ruby/autohaven",
--- localRoot = "/Users/kaka/Code/ruby/autohaven",
--- pathMappings = {
---   ["/Users/kaka/Code/ruby/autohaven"] = "${workspaceFolder}",
--- },
--- })
-
--- dap.adapters.ruby = {
---   type = "server",
---   host = "127.0.0.1",
---   port = 3001,
--- }
---
--- dap.configurations.ruby = {
---   {
---     type = "ruby",
---     name = "Rails",
---     request = "attach",
---     port = 3001,
---     server = "127.0.0.1",
---     options = {
---       source_filetype = "ruby",
---     },
---     cwd = vim.fn.getcwd(),
---     sourceRoot = "/Users/kaka/Code/ruby/autohaven",
---     pathMappings = {
---       ["/app"] = "${workspaceFolder}/app",
---     },
---   },
--- }
---     dap.set_log_level "TRACE"
---   end,
--- }
