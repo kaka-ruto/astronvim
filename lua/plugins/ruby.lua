@@ -12,16 +12,14 @@ return {
     "williamboman/mason-lspconfig.nvim",
     optional = true,
     opts = function(_, opts)
-      opts.ensure_installed =
-        require("astrocore").list_insert_unique(opts.ensure_installed, { "solargraph", "standardrb" })
+      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, { "ruby_lsp", "rubocop" })
     end,
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     optional = true,
     opts = function(_, opts)
-      opts.ensure_installed =
-        require("astrocore").list_insert_unique(opts.ensure_installed, { "solargraph", "standardrb" })
+      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, { "ruby_lsp", "rubocop" })
     end,
   },
   {
@@ -29,7 +27,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        ruby = { "standardrb" },
+        ruby = { "rubocop" },
       },
     },
   },
