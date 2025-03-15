@@ -9,11 +9,23 @@ return {
     end,
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, { "ruby_lsp", "rubocop" })
-    end,
+    -- Configure Project-Specific Ruby-LSP
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ruby_lsp = {
+          mason = false, -- Disable Mason installation
+          cmd = {
+            vim.fn.expand "~/.asdf/shims/ruby",
+            "-S",
+            "ruby-lsp",
+          },
+          init_options = {
+            formatter = "rubocop", -- Match your project's formatter
+          },
+        },
+      },
+    },
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
