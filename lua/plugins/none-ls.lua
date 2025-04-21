@@ -3,18 +3,40 @@
 ---@type LazySpec
 return {
   "nvimtools/none-ls.nvim",
-  opts = function(_, config)
-    -- config variable is the default configuration table for the setup function call
-    -- local null_ls = require "null-ls"
+  config = function()
+    local null_ls = require "null-ls"
 
-    -- Check supported formatters and linters
-    -- https://github.com/nvimtools/none-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-    -- https://github.com/nvimtools/none-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
-    config.sources = {
-      -- Set a formatter
-      -- null_ls.builtins.formatting.stylua,
-      -- null_ls.builtins.formatting.prettier,
+    null_ls.setup {
+      sources = {
+        -- Ruby-specific
+        -- null_ls.builtins.formatting.rubocop.with {
+        --   command = "bundle", -- Use bundle if using in project
+        --   args = { "exec", "rubocop", "--autocorrect", "--stdin", "$FILENAME" },
+        -- },
+        -- null_ls.builtins.diagnostics.rubocop.with {
+        --   command = "bundle",
+        --   args = { "exec", "rubocop", "--stdin", "$FILENAME" },
+        --   env = {
+        --     RUBYOPT = "-W0",
+        --   },
+        -- },
+        -- null_ls.builtins.formatting.rubocop,
+        -- null_ls.builtins.diagnostics.rubocop,
+
+        -- ERB templates
+        -- null_ls.builtins.formatting.erb_lint,
+        --
+        -- -- Web development
+        -- null_ls.builtins.formatting.prettier.with {
+        --   filetypes = { "javascript", "css", "scss", "html", "json" },
+        -- },
+        --
+        -- -- YAML formatting
+        null_ls.builtins.formatting.yamlfmt,
+        --
+        -- -- SQL formatting
+        null_ls.builtins.formatting.sqlfluff,
+      },
     }
-    return config -- return final config table
   end,
 }

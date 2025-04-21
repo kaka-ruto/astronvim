@@ -39,6 +39,7 @@ return {
     -- enable servers that you already have installed without mason
     servers = {
       -- "pyright"
+      "ruby_lsp",
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
@@ -53,12 +54,19 @@ return {
       -- the key is the server that is being setup with `lspconfig`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
+
       ruby_lsp = function(_, opts)
         require("lspconfig").ruby_lsp.setup(vim.tbl_deep_extend("force", opts, {
-          cmd = {
-            vim.fn.expand "~/.asdf/shims/ruby",
-            "-S",
-            "ruby-lsp",
+          init_options = {
+            addonSettings = {
+              ["Ruby LSP Rails"] = {
+                enablePendingMigrationsPrompt = false,
+                -- Other Rails add-on settings would go here
+              },
+            },
+            -- Optional: Enable formatters/linters
+            -- formatter = "standard",
+            -- linters = { "standard" },
           },
         }))
       end,

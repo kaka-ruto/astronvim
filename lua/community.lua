@@ -78,7 +78,7 @@ return {
   -- Search and replace
   { import = "astrocommunity.search.nvim-spectre" },
   -- Code with AI
-  { import = "astrocommunity.completion.avante-nvim" },
+  -- { import = "astrocommunity.completion.avante-nvim" },
   -- Debugging
   { import = "astrocommunity.debugging.nvim-dap-repl-highlights" },
 }
